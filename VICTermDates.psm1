@@ -226,8 +226,7 @@ function Test-VICTermDates{
 
     $Year_Range = $Term_dates.Get_Item($TestDate.Year.ToString())
     if (-Not($Year_Range)){
-        Write-Error "Provided Date out of range"
-        break
+        throw "$TestDate Provided Date out of range"
     }
 
     #get the last school day of prior year.

@@ -2,6 +2,9 @@
 
 
 $tests = @{
+    "01/01/2012" = "ERROR"
+    "01/01/2026" = "ERROR"
+    
     "01/01/2019" = $false
     "28/01/2019" = $false
     "29/01/2019" = $true
@@ -25,13 +28,22 @@ $tests = @{
 }
 
 foreach ($test in $tests.Keys){
-
-    $test_results = Test-VICTermDates -TestDate (Get-Date $test) -SimpleResults
+    try{
+        $test_results = Test-VICTermDates -TestDate (Get-Date $test) -SimpleResults
+    } catch {
+        if ($tests.$test -eq "ERROR"){
+            Write-Host -ForegroundColor Green "$test Sucsess (ERROR)"
+            continue
+        } else {
+            Write-Host -ForegroundColor Red "$test is in error 1"
+            break
+        }
+    }
 
     if ($tests.$test -eq $test_results) {
         Write-Host -ForegroundColor Green "$test Sucsess"
     } else {
-        Write-Host -ForegroundColor Red "$test is in error"
+        Write-Host -ForegroundColor Red "$test is in error 2"
         break
     }
 }
